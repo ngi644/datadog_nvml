@@ -2,7 +2,7 @@
 
 NVIDIA GPU Monitoring for Datadog
 
-NVIDIAのGPUの状態をモニタリングする `Agent Check` スクリプトです．
+`Datadog` による NVIDIAのGPUの状態をモニタリングするための `Agent Check` スクリプトです．
 `nvidia-ml-py` モジュールを利用しています．
 
 ## 現在のモニタ項目
