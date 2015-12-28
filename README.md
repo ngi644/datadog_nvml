@@ -49,3 +49,9 @@ Datadogを再起動します．
 $ sudo service datadog-agent restart
 ```
 
+
+# References
+
+- https://pypi.python.org/pypi/nvidia-ml-py/
+- http://pythonhosted.org/nvidia-ml-py/
+- http://docs.datadoghq.com/guides/agent_checks/
