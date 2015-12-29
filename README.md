@@ -1,6 +1,6 @@
 # datadog_nvml
 
-NVIDIA GPU Monitoring for Datadog
+Monitoring NVIDIA GPUs status using Datadog
 
 `Datadog` による NVIDIAのGPUの状態をモニタリングするための `Agent Check` スクリプトです．
 `nvidia-ml-py` モジュールを利用しています．
@@ -33,12 +33,14 @@ $ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py
 
 # SETUP
 
-同梱されている二つのファイルを以下のディレクトリにコピーします．
+二つのファイルを `/etc/dd-agent` ディレクトリの `checks.d, conf.d` ディレクトリにコピーします．
 
 - nvml.py: /etc/dd-agent/checks.d
 - nvml.yaml.default: /etc/dd-agent/conf.d
 
 ```
+$ git clone https://github.com/ngi644/datadog_nvml.git
+$ cd datadog_nvml
 $ sudo cp nvml.py /etc/dd-agent/checks.d
 $ sudo cp nvml.yaml.default /etc/dd-agent/conf.d
 ```
