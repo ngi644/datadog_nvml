@@ -26,7 +26,7 @@ class NvmlCheck(AgentCheck):
                 d_tags = self._dict2list(tags)
                 temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
                 info = pynvml.nvmlDeviceGetMemoryInfo(handle)
-                cps = pynvml.pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
+                cps = pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
                 total = info.total
                 free = info.free
                 used = info.used
