@@ -23,16 +23,21 @@ class NvmlCheck(AgentCheck):
                 handle = pynvml.nvmlDeviceGetHandleByIndex(device_id)
                 name = pynvml.nvmlDeviceGetName(handle)
                 tags = dict(name=name)
-                tags = self._dict2list(tags)
+                d_tags = self._dict2list(tags)
                 temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
                 info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                cps = pynvml.pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
                 total = info.total
                 free = info.free
                 used = info.used
-                self.gauge('nvml.gpu.total', total, tags=tags)
-                self.gauge('nvml.gpu.used', used, tags=tags)
-                self.gauge('nvml.gpu.free', free, tags=tags)
-                self.gauge('nvml.gpu.temp', temp, tags=tags)
+                self.gauge('nvml.gpu.total', total, tags=d_tags)
+                self.gauge('nvml.gpu.used', used, tags=d_tags)
+                self.gauge('nvml.gpu.free', free, tags=d_tags)
+                self.gauge('nvml.gpu.temp', temp, tags=d_tags)
+                for ps in cps:
+                    p_tags = tags + dict(pid=ps.pid)
+                    p_tags = self._dict2list(p_tags)
+                    self.gauge('nvml.gpu.process', ps.usedGpuMemory, tags=p_tags)
             pynvml.nvmlShutdown()
             status = AgentCheck.OK
             msg = u'Ok'
