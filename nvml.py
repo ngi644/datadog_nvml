@@ -35,7 +35,7 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.gpu.free', free, tags=d_tags)
                 self.gauge('nvml.gpu.temp', temp, tags=d_tags)
                 for ps in cps:
-                    p_tags = tags.copy
+                    p_tags = tags.copy()
                     p_tags['pid'] = ps.pid
                     p_tags = self._dict2list(p_tags)
                     self.gauge('nvml.gpu.process', ps.usedGpuMemory, tags=p_tags)
