@@ -3,6 +3,9 @@
 # project
 from checks import AgentCheck
 
+# psutil
+import psutil
+
 # pynvml
 import pynvml
 
@@ -37,13 +40,15 @@ class NvmlCheck(AgentCheck):
                 for ps in cps:
                     p_tags = tags.copy()
                     p_tags['pid'] = ps.pid
+                    p_tags['name'] = psutil.Process(ps.pid).name()
                     p_tags = self._dict2list(p_tags)
                     self.gauge('nvml.gpu.process', ps.usedGpuMemory, tags=p_tags)
-            pynvml.nvmlShutdown()
             status = AgentCheck.OK
             msg = u'Ok'
         except:
             status = AgentCheck.CRITICAL
             msg = u'Error'
+        finally:
+            pynvml.nvmlShutdown()
 
         self.service_check('nvml.check', status, message=msg)
