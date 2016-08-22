@@ -25,7 +25,7 @@ class NvmlCheck(AgentCheck):
             for device_id in xrange(deviceCount):
                 handle = pynvml.nvmlDeviceGetHandleByIndex(device_id)
                 name = pynvml.nvmlDeviceGetName(handle)
-                tags = dict(name=name)
+                tags = dict(name="{}-{}".format(name,device_id))
                 d_tags = self._dict2list(tags)
                 temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
                 info = pynvml.nvmlDeviceGetMemoryInfo(handle)
