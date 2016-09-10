@@ -28,21 +28,24 @@ class NvmlCheck(AgentCheck):
                 tags = dict(name="{}-{}".format(name,device_id))
                 d_tags = self._dict2list(tags)
                 temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
-                info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                util_rate = pynvml.nvmlDeviceGetUtilizationRates(handle)
                 cps = pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
-                total = info.total
-                free = info.free
-                used = info.used
-                self.gauge('nvml.gpu.total', total, tags=d_tags)
-                self.gauge('nvml.gpu.used', used, tags=d_tags)
-                self.gauge('nvml.gpu.free', free, tags=d_tags)
-                self.gauge('nvml.gpu.temp', temp, tags=d_tags)
+                # utilization info
+                self.gauge('nvml.util.gpu', util_rate.gpu, tags=d_tags)
+                self.gauge('nvml.util.memory', util_rate.memory, tags=d_tags)
+                # memory info
+                self.gauge('nvml.mem.total', mem.total, tags=d_tags)
+                self.gauge('nvml.mem.used', mem.used, tags=d_tags)
+                self.gauge('nvml.mem.free', mem.free, tags=d_tags)
+                # temperature info
+                self.gauge('nvml.temp.', temp, tags=d_tags)
                 for ps in cps:
                     p_tags = tags.copy()
                     p_tags['pid'] = ps.pid
                     p_tags['name'] = psutil.Process(ps.pid).name()
                     p_tags = self._dict2list(p_tags)
-                    self.gauge('nvml.gpu.process', ps.usedGpuMemory, tags=p_tags)
+                    self.gauge('nvml.process.used_gpu_memory', ps.usedGpuMemory, tags=p_tags)
             status = AgentCheck.OK
             msg = u'Ok'
         except:
