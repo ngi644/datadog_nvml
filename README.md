@@ -13,10 +13,12 @@ Monitoring NVIDIA GPUs status using Datadog
 
 ### Metrics
 
-- gpu.total: トータルメモリ
-- gpu.used: 使用中メモリ
-- gpu.free: 空きメモリ
-- gpu.temp: 温度
+- nvml.util.gpu: Percent of time over the past sample period during which one or more kernels was executing on the GPU.
+- nvml.util.memory:  Percent of time over the past sample period during which global (device) memory was being read or written.
+- nvml.mem.total: トータルメモリ
+- nvml.mem.used: 使用中メモリ
+- nvml.mem.free: 空きメモリ
+- nvml.temp: 温度
 
 ### Tags
 
