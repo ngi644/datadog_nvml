@@ -3,6 +3,7 @@
 Monitoring NVIDIA GPUs status using Datadog
 
 `Datadog Agent Check` To capture and send metrics
+
 `nvidia-ml-py` Python Module as API interface
 
 ![screenshot](docs/screenshot.png)
