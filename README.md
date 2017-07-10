@@ -16,12 +16,14 @@ Currently we will acquire the following items for each GPU.
 
 - nvml.util.gpu: Percent of time over the past sample period during which one or more kernels was executing on the GPU.
 - nvml.util.memory: Percent of time over the past sample period during which global (device) memory was being read or written.
-- nvml.util.decode: Percent of usage of HW Decoding (NVDEC) from the last sample period 
-- nvml.util.encode: Percent of usage of HW Encoding (NVENC) from the last sample period 
+- nvml.util.decode: Percent of usage of HW Decoding (NVDEC) from the last sample period (*)
+- nvml.util.encode: Percent of usage of HW Encoding (NVENC) from the last sample period (*)
 - nvml.mem.total: Total Memory
 - nvml.mem.used: Used Memory
 - nvml.mem.free: Free Memory
 - nvml.temp: Temperature
+
+* HW accelerated encode and decode are supported on NVIDIA GeForce, Quadro, Tesla, and GRID products with Fermi, Kepler, Maxwell and Pascal generation GPUs.
 
 ### Tags
 
@@ -79,11 +81,11 @@ Checks
   ======
 ...
     nvml (5.14.1)
-    -------------
+
       - instance #0 [OK]
       - Collected 16 metrics, 0 events & 1 service check
 ...
-```
+```    -------------
 
 # References
 
