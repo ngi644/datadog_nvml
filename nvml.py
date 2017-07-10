@@ -55,14 +55,14 @@ class NvmlCheck(AgentCheck):
             # utilization Encoder info
             try:
                 util_encoder = pynvml.nvmlDeviceGetEncoderUtilization(handle)
-		self.log.info('nvml.util.encoder %s' % long(util_encoder[0]))
+		self.log.debug('nvml.util.encoder %s' % long(util_encoder[0]))
                 self.gauge('nvml.util.encoder', long(util_encoder[0]), tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetEncoderUtilization:{}'.format(err))
             # utilization Decoder info
             try:
                 util_decoder = pynvml.nvmlDeviceGetDecoderUtilization(handle)
-		self.log.info('nvml.util.decoder %s' % long(util_decoder[0]))
+		self.log.debug('nvml.util.decoder %s' % long(util_decoder[0]))
                 self.gauge('nvml.util.decoder', long(util_decoder[0]), tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetDecoderUtilization:{}'.format(err))
@@ -72,7 +72,7 @@ class NvmlCheck(AgentCheck):
                 for ps in cps:
                     p_tags = tags.copy()
                     p_tags['pid'] = ps.pid
-                    p_tags['name'] = psutil.Process(ps.pid).name()
+                    p_tags['name'] = pynvml.nvmlSystemGetProcessName(ps.pid)
                     p_tags = self._dict2list(p_tags)
                     self.gauge('nvml.process.used_gpu_memory', ps.usedGpuMemory, tags=p_tags)
             except pynvml.NVMLError as err:
