@@ -23,7 +23,7 @@ Currently we will acquire the following items for each GPU.
 - nvml.mem.free: Free Memory
 - nvml.temp: Temperature
 
-* HW accelerated encode and decode are supported on NVIDIA GeForce, Quadro, Tesla, and GRID products with Fermi, Kepler, Maxwell and Pascal generation GPUs.
+(*) HW accelerated encode and decode are supported on NVIDIA GeForce, Quadro, Tesla, and GRID products with Fermi, Kepler, Maxwell and Pascal generation GPUs.
 
 ### Tags
 
