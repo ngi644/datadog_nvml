@@ -85,10 +85,16 @@ Checks
       - instance #0 [OK]
       - Collected 16 metrics, 0 events & 1 service check
 ...
-```    -------------
+```
 
+# Tested
+  Tested on AWS EC2 G2 Familly (g2.2xlarge) that include 1x NVIDIA GRID K520 card.
+  
 # References
 
 - https://pypi.python.org/pypi/nvidia-ml-py/
 - http://pythonhosted.org/nvidia-ml-py/
 - http://docs.datadoghq.com/guides/agent_checks/
+- https://developer.nvidia.com/video-encode-decode-gpu-support-matrix
+- https://developer.nvidia.com/nvidia-video-codec-sdk
+- https://docs.nvidia.com/deploy/nvml-api/index.html
