@@ -6,7 +6,9 @@ Monitoring NVIDIA GPUs status using Datadog
 
 `nvidia-ml-py` Python Module as API interface
 
-![screenshot](docs/screenshot.png)
+![screenshot1](docs/Nvidia_GPU_Datadog.png)
+
+![screenshot1](docs/Nvidia_GPU_Datadog2.png)
 
 ## Current Monitor Supported
 
