@@ -9,8 +9,8 @@ import psutil
 # pynvml
 import pynvml
 
-__version__ = '0.1.3'
-__author__ = 'Takashi NAGAI'
+__version__ = '0.1.4'
+__author__ = 'Takashi NAGAI, Alejandro Ferrari'
 
 
 class NvmlCheck(AgentCheck):
@@ -45,20 +45,34 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.mem.free', mem.free, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetMemoryInfo:{}'.format(err))
-            # utilization info
+            # utilization GPU/Memory info
             try:
                 util_rate = pynvml.nvmlDeviceGetUtilizationRates(handle)
                 self.gauge('nvml.util.gpu', util_rate.gpu, tags=d_tags)
                 self.gauge('nvml.util.memory', util_rate.memory, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetUtilizationRates:{}'.format(err))
+            # utilization Encoder info
+            try:
+                util_encoder = pynvml.nvmlDeviceGetEncoderUtilization(handle)
+		self.log.debug('nvml.util.encoder %s' % long(util_encoder[0]))
+                self.gauge('nvml.util.encoder', long(util_encoder[0]), tags=d_tags)
+            except pynvml.NVMLError as err:
+                msg_list.append(u'nvmlDeviceGetEncoderUtilization:{}'.format(err))
+            # utilization Decoder info
+            try:
+                util_decoder = pynvml.nvmlDeviceGetDecoderUtilization(handle)
+		self.log.debug('nvml.util.decoder %s' % long(util_decoder[0]))
+                self.gauge('nvml.util.decoder', long(util_decoder[0]), tags=d_tags)
+            except pynvml.NVMLError as err:
+                msg_list.append(u'nvmlDeviceGetDecoderUtilization:{}'.format(err))
             # Compute running processes
             try:
                 cps = pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
                 for ps in cps:
                     p_tags = tags.copy()
                     p_tags['pid'] = ps.pid
-                    p_tags['name'] = psutil.Process(ps.pid).name()
+                    p_tags['name'] = pynvml.nvmlSystemGetProcessName(ps.pid)
                     p_tags = self._dict2list(p_tags)
                     self.gauge('nvml.process.used_gpu_memory', ps.usedGpuMemory, tags=p_tags)
             except pynvml.NVMLError as err:
