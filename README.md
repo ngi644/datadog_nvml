@@ -64,8 +64,8 @@ Copy the two files to the `checks.d, conf.d` directory in the` /etc/dd-agent` di
 ```
 $ git clone https://github.com/ngi644/datadog_nvml.git
 $ cd datadog_nvml
-$ sudo cp nvml.py /etc/dd-agent/checks.d
-$ sudo cp nvml.yaml.default /etc/dd-agent/conf.d
+$ sudo cp nvml.py /etc/datadog-agent/checks.d
+$ sudo cp nvml.yaml.default /etc/datadog-agent/conf.d
 ```
 
 Restart Datadog Agent, to compile the PY Source and update the check file.
@@ -91,6 +91,7 @@ Checks
 
 # Tested
   Tested on AWS EC2 G2 Familly (g2.2xlarge) that include 1x NVIDIA GRID K520 card.
+  Tested on Bare-metal Supermicro server with NVIDIA TESLA P4 and P40 cards.
   
 # References
 
