@@ -56,16 +56,15 @@ Location: /opt/datadog-agent/embedded/lib/python2.7/site-packages
 ```
 # SETUP
 
-Copy the two files to the `checks.d, conf.d` directory in the` /etc/dd-agent` directory.
+Get the two files and placed them at:
 
 - nvml.py: /etc/dd-agent/checks.d
 - nvml.yaml.default: /etc/dd-agent/conf.d
 
+with the command:
 ```
-$ git clone https://github.com/ngi644/datadog_nvml.git
-$ cd datadog_nvml
-$ sudo cp nvml.py /etc/datadog-agent/checks.d
-$ sudo cp nvml.yaml.default /etc/datadog-agent/conf.d
+$ sudo wget https://raw.githubusercontent.com/ngi644/datadog_nvml/master/nvml.py -O /etc/datadog-agent/checks.d/nvml.py
+$ sudo wget https://raw.githubusercontent.com/ngi644/datadog_nvml/master/nvml.yaml.default -O /etc/datadog-agent/conf.d/nvml.yaml.default
 ```
 
 Restart Datadog Agent, to compile the PY Source and update the check file.
@@ -77,7 +76,12 @@ Check if module was loaded correctly
 ```
 $ sudo service datadog-agent info
 ```
+or
+```
+$ sudo datadog-agent status
+```
 
+Result should look like:
 ```
 Checks
   ======
@@ -88,6 +92,26 @@ Checks
       - Collected 16 metrics, 0 events & 1 service check
 ...
 ```
+or with:
+```
+$ sudo datadog-agent status
+```
+Result should look like:
+```
+Checks
+  ======
+...
+    nvml (0.1.4)
+    ------------
+      Instance ID: nvml:d9950296b931429 [OK]
+      Total Runs: 1
+      Metric Samples: Last Run: 8, Total: 8
+      Events: Last Run: 0, Total: 0
+      Service Checks: Last Run: 1, Total: 1
+      Average Execution Time : 700ms
+...
+```
+
 
 # Tested
   Tested on AWS EC2 G2 Familly (g2.2xlarge) that include 1x NVIDIA GRID K520 card.
