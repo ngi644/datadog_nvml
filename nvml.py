@@ -1,7 +1,12 @@
 # encoding: utf-8
 
-# project
-from checks import AgentCheck
+# the following try/except block will make the custom check compatible with any Agent version
+try:
+    # first, try to import the base class from old versions of the Agent...
+    from checks import AgentCheck
+except ImportError:
+    # ...if the above failed, the check is running in Agent version 6 or later
+    from datadog_checks.checks import AgentCheck
 
 # psutil
 import psutil
@@ -33,7 +38,8 @@ class NvmlCheck(AgentCheck):
             d_tags = self._dict2list(tags)
             # temperature info
             try:
-                temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
+                temp = pynvml.nvmlDeviceGetTemperature(
+                    handle, pynvml.NVML_TEMPERATURE_GPU)
                 self.gauge('nvml.temp.', temp, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetTemperature:{}'.format(err))
@@ -51,21 +57,26 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.util.gpu', util_rate.gpu, tags=d_tags)
                 self.gauge('nvml.util.memory', util_rate.memory, tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetUtilizationRates:{}'.format(err))
+                msg_list.append(
+                    u'nvmlDeviceGetUtilizationRates:{}'.format(err))
             # utilization Encoder info
             try:
                 util_encoder = pynvml.nvmlDeviceGetEncoderUtilization(handle)
-		self.log.debug('nvml.util.encoder %s' % long(util_encoder[0]))
-                self.gauge('nvml.util.encoder', long(util_encoder[0]), tags=d_tags)
+                self.log.debug('nvml.util.encoder %s' % long(util_encoder[0]))
+                self.gauge('nvml.util.encoder', long(
+                    util_encoder[0]), tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetEncoderUtilization:{}'.format(err))
+                msg_list.append(
+                    u'nvmlDeviceGetEncoderUtilization:{}'.format(err))
             # utilization Decoder info
             try:
                 util_decoder = pynvml.nvmlDeviceGetDecoderUtilization(handle)
-		self.log.debug('nvml.util.decoder %s' % long(util_decoder[0]))
-                self.gauge('nvml.util.decoder', long(util_decoder[0]), tags=d_tags)
+                self.log.debug('nvml.util.decoder %s' % long(util_decoder[0]))
+                self.gauge('nvml.util.decoder', long(
+                    util_decoder[0]), tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetDecoderUtilization:{}'.format(err))
+                msg_list.append(
+                    u'nvmlDeviceGetDecoderUtilization:{}'.format(err))
             # Compute running processes
             try:
                 cps = pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
@@ -74,9 +85,11 @@ class NvmlCheck(AgentCheck):
                     p_tags['pid'] = ps.pid
                     p_tags['name'] = pynvml.nvmlSystemGetProcessName(ps.pid)
                     p_tags = self._dict2list(p_tags)
-                    self.gauge('nvml.process.used_gpu_memory', ps.usedGpuMemory, tags=p_tags)
+                    self.gauge('nvml.process.used_gpu_memory',
+                               ps.usedGpuMemory, tags=p_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetComputeRunningProcesses:{}'.format(err))
+                msg_list.append(
+                    u'nvmlDeviceGetComputeRunningProcesses:{}'.format(err))
         if msg_list:
             status = AgentCheck.CRITICAL
             msg = u','.join(msg_list)
