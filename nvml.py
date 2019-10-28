@@ -45,7 +45,7 @@ class NvmlCheck(AgentCheck):
                 msg_list.append(u'nvmlDeviceGetTemperature:{}'.format(err))
             # power info
             try:
-                pwr = pynvml.nvmlDeviceGetPowerUsage(handle)
+                pwr = pynvml.nvmlDeviceGetPowerUsage(handle) // 1000
                 self.gauge('nvml.power.', pwr, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetPowerUsage:{}'.format(err))
