@@ -49,6 +49,12 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.power.', pwr, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetPowerUsage:{}'.format(err))
+            # fan info
+            try:
+                fan = pynvml.nvmlDeviceGetFanSpeed(handle)
+                self.gauge('nvml.fan.', fan, tags=d_tags)
+            except pynvml.NVMLError as err:
+                msg_list.append(u'nvmlDeviceGetFanSpeed:{}'.format(err))
             # memory info
             try:
                 mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
