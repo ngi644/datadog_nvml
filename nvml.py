@@ -14,7 +14,7 @@ import psutil
 # pynvml
 import pynvml
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 __author__ = 'Takashi NAGAI, Alejandro Ferrari'
 
 
@@ -43,6 +43,18 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.temp.', temp, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(u'nvmlDeviceGetTemperature:{}'.format(err))
+            # power info
+            try:
+                pwr = pynvml.nvmlDeviceGetPowerUsage(handle) // 1000
+                self.gauge('nvml.power.', pwr, tags=d_tags)
+            except pynvml.NVMLError as err:
+                msg_list.append(u'nvmlDeviceGetPowerUsage:{}'.format(err))
+            # fan info
+            try:
+                fan = pynvml.nvmlDeviceGetFanSpeed(handle)
+                self.gauge('nvml.fan.', fan, tags=d_tags)
+            except pynvml.NVMLError as err:
+                msg_list.append(u'nvmlDeviceGetFanSpeed:{}'.format(err))
             # memory info
             try:
                 mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
