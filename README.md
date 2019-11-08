@@ -24,6 +24,17 @@ Currently we will acquire the following items for each GPU.
 - nvml.mem.used: Used Memory
 - nvml.mem.free: Free Memory
 - nvml.temp: Temperature
+- nvml.gpus.number: Number of active GPUs
+- nvml.throttle.appsettings: Clocks are being throttled by the applications settings
+- nvml.throttle.display: Clocks are being throttled by the Display clocks settings
+- nvml.throttle.hardware: Clocks are being throttled by a factor of 2 or more due to high temperature, high power draw, and/or PState or clock change
+- nvml.throttle.power.hardware: Clocks are being throttled due to the External Power Brake Assertion being triggered (e.g., by the system power supply)
+- nvml.throttle.idle: Clocks are being throttled to Idle state because nothing is running on the GPU
+- nvml.throttle.power.software: Clocks are being throttled by the software power scaling algorithm
+- nvml.throttle.syncboost: Clocks are being throttled because this GPU is in a sync boost group and will sync to the lowest possible clocks across the group
+- nvml.throttle.temp.hardware: Clocks are being throttled by a factor of 2 or more due to high temperature
+- nvml.throttle.temp.software: Clocks are being throttled due to high GPU core and/or memory temperature
+- nvml.throttle.unknown: Clocks are being throttled due to an unknown reason
 
 (*) HW accelerated encode and decode are supported on NVIDIA GeForce, Quadro, Tesla, and GRID products with Fermi, Kepler, Maxwell and Pascal generation GPUs.
 
