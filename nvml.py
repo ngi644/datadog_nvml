@@ -41,7 +41,7 @@ GPU_THROTTLE_DISPLAY_CLOCKS_SETTINGS = 0x100
 class NvmlCheck(AgentCheck):
 
     def _dict2list(self, tags={}):
-        return [u"{k}:{v}".format(k=k, v=v) for k, v in tags.items()]
+        return ["{k}:{v}".format(k=k, v=v) for k, v in list(tags.items())]
 
     def check(self, instance):
         pynvml.nvmlInit()
@@ -53,7 +53,7 @@ class NvmlCheck(AgentCheck):
             deviceCount = 0
         # Number of active GPUs
         self.gauge('nvml.gpus.number', deviceCount)
-        for device_id in xrange(deviceCount):
+        for device_id in range(deviceCount):
             handle = pynvml.nvmlDeviceGetHandleByIndex(device_id)
             name = pynvml.nvmlDeviceGetName(handle)
             tags = dict(name="{}-{}".format(name, device_id))
@@ -64,19 +64,19 @@ class NvmlCheck(AgentCheck):
                     handle, pynvml.NVML_TEMPERATURE_GPU)
                 self.gauge('nvml.temp.', temp, tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetTemperature:{}'.format(err))
+                msg_list.append('nvmlDeviceGetTemperature:{}'.format(err))
             # power info
             try:
                 pwr = pynvml.nvmlDeviceGetPowerUsage(handle) // 1000
                 self.gauge('nvml.power.', pwr, tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetPowerUsage:{}'.format(err))
+                msg_list.append('nvmlDeviceGetPowerUsage:{}'.format(err))
             # fan info
             try:
                 fan = pynvml.nvmlDeviceGetFanSpeed(handle)
                 self.gauge('nvml.fan.', fan, tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetFanSpeed:{}'.format(err))
+                msg_list.append('nvmlDeviceGetFanSpeed:{}'.format(err))
             # memory info
             try:
                 mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
@@ -84,7 +84,7 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.mem.used', mem.used, tags=d_tags)
                 self.gauge('nvml.mem.free', mem.free, tags=d_tags)
             except pynvml.NVMLError as err:
-                msg_list.append(u'nvmlDeviceGetMemoryInfo:{}'.format(err))
+                msg_list.append('nvmlDeviceGetMemoryInfo:{}'.format(err))
             # utilization GPU/Memory info
             try:
                 util_rate = pynvml.nvmlDeviceGetUtilizationRates(handle)
@@ -92,25 +92,25 @@ class NvmlCheck(AgentCheck):
                 self.gauge('nvml.util.memory', util_rate.memory, tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(
-                    u'nvmlDeviceGetUtilizationRates:{}'.format(err))
+                    'nvmlDeviceGetUtilizationRates:{}'.format(err))
             # utilization Encoder info
             try:
                 util_encoder = pynvml.nvmlDeviceGetEncoderUtilization(handle)
-                self.log.debug('nvml.util.encoder %s' % long(util_encoder[0]))
-                self.gauge('nvml.util.encoder', long(
+                self.log.debug('nvml.util.encoder %s' % int(util_encoder[0]))
+                self.gauge('nvml.util.encoder', int(
                     util_encoder[0]), tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(
-                    u'nvmlDeviceGetEncoderUtilization:{}'.format(err))
+                    'nvmlDeviceGetEncoderUtilization:{}'.format(err))
             # utilization Decoder info
             try:
                 util_decoder = pynvml.nvmlDeviceGetDecoderUtilization(handle)
-                self.log.debug('nvml.util.decoder %s' % long(util_decoder[0]))
-                self.gauge('nvml.util.decoder', long(
+                self.log.debug('nvml.util.decoder %s' % int(util_decoder[0]))
+                self.gauge('nvml.util.decoder', int(
                     util_decoder[0]), tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(
-                    u'nvmlDeviceGetDecoderUtilization:{}'.format(err))
+                    'nvmlDeviceGetDecoderUtilization:{}'.format(err))
             # Compute running processes
             try:
                 cps = pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
@@ -123,7 +123,7 @@ class NvmlCheck(AgentCheck):
                                ps.usedGpuMemory, tags=p_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(
-                    u'nvmlDeviceGetComputeRunningProcesses:{}'.format(err))
+                    'nvmlDeviceGetComputeRunningProcesses:{}'.format(err))
             # Clocks throttling info
             # Divide by the mask so that the value is either 0 or 1 per GPU
             try:
@@ -170,13 +170,13 @@ class NvmlCheck(AgentCheck):
                     tags=d_tags)
             except pynvml.NVMLError as err:
                 msg_list.append(
-                    u'nvmlDeviceGetCurrentClocksThrottleReasons:{}'.format(err))
+                    'nvmlDeviceGetCurrentClocksThrottleReasons:{}'.format(err))
         if msg_list:
             status = AgentCheck.CRITICAL
-            msg = u','.join(msg_list)
+            msg = ','.join(msg_list)
         else:
             status = AgentCheck.OK
-            msg = u'Ok'
+            msg = 'Ok'
         pynvml.nvmlShutdown()
 
         self.service_check('nvml.check', status, message=msg)

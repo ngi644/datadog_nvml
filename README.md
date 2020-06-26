@@ -50,7 +50,11 @@ nvidia-ml-py (v7.352.0)
 - https://pypi.python.org/pypi/nvidia-ml-py
 
 ```
+# Python 2
 $ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py==7.352.0
+
+# Python 3
+$ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py3==7.352.0
 ```
 
 Check that was correctly installed:
