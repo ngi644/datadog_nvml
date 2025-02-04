@@ -45,23 +45,23 @@ Currently we will acquire the following items for each GPU.
 
 # REQUIRES
 
-nvidia-ml-py (v7.352.0)
+nvidia-ml-py (v12.555.43)
 
 - https://pypi.python.org/pypi/nvidia-ml-py
 
 ```
 # Python 2
-$ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py==7.352.0
+$ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py==12.555.43
 
 # Python 3
-$ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py3==7.352.0
+$ sudo /opt/datadog-agent/embedded/bin/pip install nvidia-ml-py3==12.555.43
 ```
 
 Check that was correctly installed:
 ```
 # /opt/datadog-agent/embedded/bin/pip show nvidia-ml-py
 Name: nvidia-ml-py
-Version: 7.352.0
+Version: 12.555.43
 Summary: Python Bindings for the NVIDIA Management Library
 Home-page: http://www.nvidia.com/
 Author: NVIDIA Corporation
@@ -145,7 +145,7 @@ $ docker run -d --gpus=all \
 # Tested
   Tested on AWS EC2 G2 Familly (g2.2xlarge) that include 1x NVIDIA GRID K520 card.
   Tested on Bare-metal Supermicro server with NVIDIA TESLA P4 and P40 cards.
-  
+
 # References
 
 - https://pypi.python.org/pypi/nvidia-ml-py/

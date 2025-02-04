@@ -124,53 +124,6 @@ class NvmlCheck(AgentCheck):
             except pynvml.NVMLError as err:
                 msg_list.append(
                     'nvmlDeviceGetComputeRunningProcesses:{}'.format(err))
-            # Clocks throttling info
-            # Divide by the mask so that the value is either 0 or 1 per GPU
-            try:
-                throttle_reasons = (
-                    pynvml.nvmlDeviceGetCurrentClocksThrottleReasons(handle))
-                self.gauge('nvml.throttle.appsettings', (throttle_reasons &
-                    pynvml.nvmlClocksThrottleReasonApplicationsClocksSetting) /
-                    pynvml.nvmlClocksThrottleReasonApplicationsClocksSetting,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.display', (throttle_reasons &
-                    GPU_THROTTLE_DISPLAY_CLOCKS_SETTINGS) /
-                    GPU_THROTTLE_DISPLAY_CLOCKS_SETTINGS,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.hardware', (throttle_reasons &
-                    pynvml.nvmlClocksThrottleReasonHwSlowdown) /
-                    pynvml.nvmlClocksThrottleReasonHwSlowdown,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.idle', (throttle_reasons &
-                    pynvml.nvmlClocksThrottleReasonGpuIdle) /
-                    pynvml.nvmlClocksThrottleReasonGpuIdle,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.power.hardware', (throttle_reasons &
-                    GPU_THROTTLE_POWER_BRAKE_SLOWDOWN_HARDWARE) /
-                    GPU_THROTTLE_POWER_BRAKE_SLOWDOWN_HARDWARE,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.power.software', (throttle_reasons &
-                    pynvml.nvmlClocksThrottleReasonSwPowerCap) /
-                    pynvml.nvmlClocksThrottleReasonSwPowerCap,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.syncboost', (throttle_reasons &
-                    GPU_THROTTLE_SYNCBOOST) / GPU_THROTTLE_SYNCBOOST,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.temp.hardware', (throttle_reasons &
-                    GPU_THROTTLE_THERMAL_SLOWDOWN_HARDWARE) /
-                    GPU_THROTTLE_THERMAL_SLOWDOWN_HARDWARE,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.temp.software', (throttle_reasons &
-                    GPU_THROTTLE_THERMAL_SLOWDOWN_SOFTWARE) /
-                    GPU_THROTTLE_THERMAL_SLOWDOWN_SOFTWARE,
-                    tags=d_tags)
-                self.gauge('nvml.throttle.unknown', (throttle_reasons &
-                    pynvml.nvmlClocksThrottleReasonUnknown) /
-                    pynvml.nvmlClocksThrottleReasonUnknown,
-                    tags=d_tags)
-            except pynvml.NVMLError as err:
-                msg_list.append(
-                    'nvmlDeviceGetCurrentClocksThrottleReasons:{}'.format(err))
         if msg_list:
             status = AgentCheck.CRITICAL
             msg = ','.join(msg_list)
